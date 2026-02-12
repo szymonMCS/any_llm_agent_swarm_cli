@@ -1,0 +1,27 @@
+# AgentSwarm Core Dependencies
+# =============================
+
+# CLI framework
+typer>=0.9.0
+
+# Rich terminal output
+rich>=13.0.0
+
+# Data validation and settings
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# HTTP client
+httpx>=0.25.0
+
+# Async support
+anyio>=3.7.0
+
+# Structured logging
+structlog>=23.0.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# YAML support
+pyyaml>=6.0.0
