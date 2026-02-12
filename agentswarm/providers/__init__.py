@@ -1,5 +1,4 @@
-"""
-AgentSwarm LLM Providers Module.
+"""AgentSwarm LLM Providers Module.
 
 This module provides a unified interface for multiple LLM providers:
 - OpenAI (GPT-4, GPT-3.5)
@@ -75,15 +74,6 @@ from .base import (
     InvalidRequestError,
 )
 
-# Provider implementations
-from .openai_provider import OpenAIProvider
-from .anthropic_provider import AnthropicProvider
-from .google_gemini_provider import GoogleGeminiProvider
-from .cohere_provider import CohereProvider
-from .mistral_provider import MistralProvider
-from .ollama_provider import OllamaProvider
-from .azure_openai_provider import AzureOpenAIProvider
-
 # Factory and convenience functions
 from .factory import (
     LLMProviderFactory,
@@ -93,8 +83,13 @@ from .factory import (
     detect_providers,
 )
 
-__version__ = "1.0.0"
+# Provider implementations - lazy imports
+def _lazy_import(name):
+    """Lazy import for providers."""
+    import importlib
+    return importlib.import_module(f'.{name}', __name__)
 
+# Make providers available but import them only when needed
 __all__ = [
     # Base classes
     "BaseLLMProvider",
@@ -108,23 +103,14 @@ __all__ = [
     "EmbeddingResult",
     "RateLimiter",
     "RetryHandler",
-    
+
     # Exceptions
     "ProviderError",
     "AuthenticationError",
     "RateLimitError",
     "ModelNotFoundError",
     "InvalidRequestError",
-    
-    # Provider implementations
-    "OpenAIProvider",
-    "AnthropicProvider",
-    "GoogleGeminiProvider",
-    "CohereProvider",
-    "MistralProvider",
-    "OllamaProvider",
-    "AzureOpenAIProvider",
-    
+
     # Factory
     "LLMProviderFactory",
     "create_provider",
@@ -132,3 +118,5 @@ __all__ = [
     "get_available_providers",
     "detect_providers",
 ]
+
+__version__ = "1.0.0"

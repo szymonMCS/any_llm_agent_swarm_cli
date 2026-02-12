@@ -1,90 +1,83 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "agentswarm"
-version = "1.0.0"
-description = "Agent Swarm CLI - Przetwarzaj duże zbiory plików z LLM"
+version = "0.1.0"
+description = "A powerful multi-agent orchestration framework for building distributed AI systems"
 readme = "README.md"
-license = {file = "LICENSE"}
-requires-python = ">=3.9"
+license = {text = "MIT"}
+requires-python = ">=3.8"
 authors = [
     {name = "AgentSwarm Team", email = "team@agentswarm.dev"}
 ]
-keywords = ["llm", "ai", "agents", "swarm", "batch-processing", "cli"]
+keywords = [
+    "agents",
+    "ai",
+    "multi-agent",
+    "swarm",
+    "orchestration",
+    "distributed",
+    "automation"
+]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
 ]
 
 dependencies = [
-    # Core
-    "pydantic>=2.0.0",
     "typer>=0.9.0",
     "rich>=13.0.0",
-    "aiofiles>=23.0.0",
-    
-    # Security
-    "keyring>=24.0.0",
-    "cryptography>=41.0.0",
-    
-    # Async/Processing
-    "asyncio-throttle>=1.0.0",
-    "tqdm>=4.65.0",
-    
-    # Utilities
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.0.0",
+    "httpx>=0.25.0",
+    "anyio>=3.7.0",
+    "structlog>=23.0.0",
     "python-dotenv>=1.0.0",
-    "pyyaml>=6.0",
-    "httpx>=0.24.0",
+    "pyyaml>=6.0.0",
 ]
 
 [project.optional-dependencies]
-# Individual providers
-openai = ["openai>=1.0.0"]
-anthropic = ["anthropic>=0.21.0"]
-google = ["google-generativeai>=0.3.0"]
-cohere = ["cohere>=4.0.0"]
-mistral = ["mistralai>=0.0.12"]
-ollama = ["ollama>=0.1.0"]
-azure = ["azure-openai>=1.0.0"]
-
-# All providers
-all = [
-    "openai>=1.0.0",
-    "anthropic>=0.21.0",
-    "google-generativeai>=0.3.0",
-    "cohere>=4.0.0",
-    "mistralai>=0.0.12",
-    "ollama>=0.1.0",
-    "azure-openai>=1.0.0",
-]
-
-# Development
 dev = [
-    "pytest>=7.0.0",
+    "pytest>=7.4.0",
     "pytest-asyncio>=0.21.0",
-    "pytest-cov>=4.0.0",
+    "pytest-cov>=4.1.0",
     "black>=23.0.0",
-    "isort>=5.12.0",
-    "mypy>=1.0.0",
     "ruff>=0.1.0",
-    "pre-commit>=3.0.0",
+    "mypy>=1.5.0",
+    "pre-commit>=3.4.0",
+]
+docs = [
     "mkdocs>=1.5.0",
     "mkdocs-material>=9.0.0",
+    "mkdocstrings[python]>=0.23.0",
+]
+openai = [
+    "openai>=1.0.0",
+]
+anthropic = [
+    "anthropic>=0.8.0",
+]
+all = [
+    "openai>=1.0.0",
+    "anthropic>=0.8.0",
 ]
 
 [project.scripts]
 agentswarm = "agentswarm.cli.main:app"
-asw = "agentswarm.cli.main:app"
 
 [project.urls]
 Homepage = "https://github.com/agentswarm/agentswarm"
@@ -93,101 +86,35 @@ Repository = "https://github.com/agentswarm/agentswarm"
 Issues = "https://github.com/agentswarm/agentswarm/issues"
 Changelog = "https://github.com/agentswarm/agentswarm/blob/main/CHANGELOG.md"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/agentswarm"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agentswarm*"]
+exclude = ["tests*", "docs*"]
 
-[tool.hatch.build.targets.sdist]
-include = [
-    "/src",
-    "/tests",
-    "/docs",
-    "/README.md",
-    "/LICENSE",
-]
+[tool.setuptools.package-data]
+agentswarm = ["py.typed", "*.yaml", "*.yml", "*.json"]
 
-# Black configuration
 [tool.black]
-line-length = 100
-target-version = ['py39', 'py310', 'py311', 'py312']
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
 include = '\.pyi?$'
-exclude = '''
+extend-exclude = '''
 /(
-    \.git
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
   | \.venv
   | build
   | dist
 )/
 '''
 
-# isort configuration
-[tool.isort]
-profile = "black"
-line_length = 100
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-ensure_newline_before_comments = true
-
-# mypy configuration
-[tool.mypy]
-python_version = "3.9"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = false
-no_implicit_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_no_return = true
-warn_unreachable = true
-strict_equality = true
-show_error_codes = true
-
-# pytest configuration
-[tool.pytest.ini_options]
-minversion = "7.0"
-testpaths = ["tests"]
-asyncio_mode = "auto"
-addopts = """
-    -v
-    --tb=short
-    --strict-markers
-    --cov=agentswarm
-    --cov-report=term-missing
-    --cov-report=html:htmlcov
-"""
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: marks tests as integration tests",
-    "unit: marks tests as unit tests",
-]
-
-# Coverage configuration
-[tool.coverage.run]
-source = ["src/agentswarm"]
-omit = [
-    "*/tests/*",
-    "*/test_*",
-    "*/__main__.py",
-]
-
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "raise AssertionError",
-    "raise NotImplementedError",
-    "if __name__ == .__main__.:",
-    "if TYPE_CHECKING:",
-]
-
-# Ruff configuration
 [tool.ruff]
-target-version = "py39"
-line-length = 100
+target-version = "py38"
+line-length = 88
 select = [
     "E",   # pycodestyle errors
     "W",   # pycodestyle warnings
@@ -209,6 +136,56 @@ ignore = [
 [tool.ruff.pydocstyle]
 convention = "google"
 
-[tool.ruff.per-file-ignores]
-"tests/*" = ["D", "S"]
-"__init__.py" = ["D104"]
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+show_error_codes = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--verbose",
+    "--cov=agentswarm",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["agentswarm"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "agentswarm/__main__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
