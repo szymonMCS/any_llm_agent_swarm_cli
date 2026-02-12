@@ -140,6 +140,20 @@ temp/
 tmp/
 *.local
 
+# Test related files
+test_results/
+test-output/
+test-reports/
+*.test_results
+junit-xml/
+pytest-report.xml
+pytest-*.xml
+.mutmut-cache/
+test_results.log
+*.test.log
+pytest.log
+test_artifacts/
+
 # Secrets
 *.key
 *.pem
