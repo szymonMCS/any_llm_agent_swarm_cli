@@ -1,0 +1,1 @@
+from agentswarm.cli.main import main; main()

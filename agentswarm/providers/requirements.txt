@@ -1,0 +1,27 @@
+# AgentSwarm LLM Providers - Requirements
+# Install with: pip install -r requirements.txt
+
+# OpenAI Provider
+openai>=1.0.0
+
+# Anthropic Provider
+anthropic>=0.25.0
+
+# Google Gemini Provider
+google-generativeai>=0.7.0
+
+# Cohere Provider
+cohere>=5.0.0
+
+# Mistral Provider
+mistralai>=1.0.0
+
+# Ollama Provider
+ollama>=0.3.0
+aiohttp>=3.9.0
+
+# Azure OpenAI Provider (uses openai package)
+# No additional dependencies needed
+
+# Common dependencies
+pydantic>=2.0.0
